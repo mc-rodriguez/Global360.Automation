@@ -33,6 +33,7 @@ Watch the browser (headed), or pick another browser:
 
 ```powershell
 $env:HEADED = "1"; dotnet test
+$env:HEADED = "1"; $env:PAUSE_AT_END = "1"; dotnet test   # keep the browser open at the end; click Resume to finish
 $env:BROWSER = "firefox"; dotnet test   # install it first: playwright.ps1 install firefox
 ```
 

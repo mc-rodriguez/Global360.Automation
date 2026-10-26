@@ -75,5 +75,11 @@ public class AssetLifecycleTests : PageTest
         // 5. Validate the History tab
         await details.OpenHistoryTabAsync();
         await details.ExpectHistoryAsync(asset, userName, actor: "Admin User", startedAt, serverTimeZone);
+
+        // Demo aid: keep the browser open for inspection (headed runs only; click Resume in the Inspector to finish).
+        if (Environment.GetEnvironmentVariable("PAUSE_AT_END") == "1")
+        {
+            await Page.PauseAsync();
+        }
     }
 }
