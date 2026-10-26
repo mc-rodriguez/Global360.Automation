@@ -45,7 +45,6 @@ public class AssetLifecycleTests : PageTest
     public async Task CreatedCheckedOutAsset_CanBeFoundViewedAndAuditedInHistory()
     {
         var startedAt = DateTimeOffset.UtcNow;
-        var asset = AssetData.NewMacbook();
         var serverTimeZone = TimeZoneInfo.FindSystemTimeZoneById(_settings.ServerTimeZoneId);
 
         var login = new LoginPage(Page);
@@ -60,7 +59,7 @@ public class AssetLifecycleTests : PageTest
 
         // 2. Create a Macbook Pro 13" (Ready to Deploy) checked out to a random user
         await create.GotoAsync();
-        var userName = await create.CreateCheckedOutAssetAsync(asset);
+        var (asset, userName) = await create.CreateCheckedOutAssetAsync(AssetData.NewMacbook());
         await list.ExpectCreatedAsync(asset.Tag);
         TestContext.Progress.WriteLine($"Created {asset.DisplayTitle}, checked out to {userName}");
 

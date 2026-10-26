@@ -12,12 +12,14 @@ public sealed class CreateAssetPage(IPage page)
     public async Task GotoAsync() => await page.GotoAsync("/hardware/create");
 
     /// <summary>
-    /// Fills the form, checks the asset out to a random user and saves.
-    /// Returns the display name of the user picked.
+    /// Fills the form, checks the asset out to a random user and saves. Keeps the asset tag
+    /// the application pre-fills. Returns the created asset (with that tag) and the user picked.
     /// </summary>
-    public async Task<string> CreateCheckedOutAssetAsync(AssetData asset)
+    public async Task<(AssetData Asset, string UserName)> CreateCheckedOutAssetAsync(AssetData asset)
     {
-        await page.GetByRole(AriaRole.Textbox, new() { Name = "Asset Tag", Exact = true }).FillAsync(asset.Tag);
+        var tagField = page.GetByRole(AriaRole.Textbox, new() { Name = "Asset Tag", Exact = true });
+        await Expect(tagField).Not.ToBeEmptyAsync();
+        var created = asset with { Tag = await tagField.InputValueAsync() };
 
         await SelectOptionAsync("Select a Model", asset.Model);
         await SelectOptionAsync("Select Status", asset.Status);
@@ -26,7 +28,7 @@ public sealed class CreateAssetPage(IPage page)
         var userName = await SelectRandomUserAsync();
 
         await page.GetByRole(AriaRole.Button, new() { Name = "Save" }).First.ClickAsync();
-        return userName;
+        return (created, userName);
     }
 
     private async Task SelectOptionAsync(string comboboxName, string optionText)

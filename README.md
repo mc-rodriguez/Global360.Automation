@@ -53,7 +53,7 @@ shown on the login page.
 
 - **Page Object Model** (`Pages/`): locators and page actions live in page classes; the test reads as the scenario.
 - **Resilient locators**: role/label based locators and Playwright web-first assertions, with no fixed sleeps.
-- **Shared demo data**: every run creates an asset with a unique tag (`PW<timestamp>`) and asserts on that tag only, so other users' data does not interfere.
+- **Shared demo data**: the test keeps the asset tag the application pre-fills on the create form (unique per asset) and asserts on that tag only, so other users' data does not interfere.
 - **Random user**: picked from the checkout dropdown at run time; the chosen name is then verified on the list, details and History.
 - **Time assertion**: History timestamps have minute precision, so they are checked to be within 10 minutes of the run, using `SNIPEIT_TIMEZONE`.
 - **Diagnostics**: a Playwright trace is saved to `bin/Debug/net10.0/traces/` when a test fails

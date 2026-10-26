@@ -7,9 +7,11 @@ public sealed record AssetData(string Tag, string Model, string Status)
     public const string ReadyToDeploy = "Ready to Deploy";
     public const string DeployedBadge = "Deployed";
 
-    /// <summary>Creates a Macbook Pro 13" asset with a tag that is unique per run (the demo is shared).</summary>
-    public static AssetData NewMacbook() =>
-        new($"PW{DateTime.UtcNow:yyyyMMddHHmmssfff}", MacbookModel, ReadyToDeploy);
+    /// <summary>
+    /// The asset to create. The tag is left empty: the app pre-fills a unique one on the form,
+    /// and the created asset is returned with that tag.
+    /// </summary>
+    public static AssetData NewMacbook() => new(string.Empty, MacbookModel, ReadyToDeploy);
 
     /// <summary>Title shown in the asset page heading and history, e.g. #TAG - Macbook Pro 13".</summary>
     public string DisplayTitle => $"#{Tag} - {Model}";
